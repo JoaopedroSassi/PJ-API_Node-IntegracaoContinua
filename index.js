@@ -7,10 +7,10 @@ const port = 3000;
 
 // Configuração do MySQL
 const connection = mysql.createConnection({
-  host: 'meu-mysql',
+  host: 'localhost',
   user: 'root', // Seu nome de usuário do MySQL
   password: 'Sql@2000', // Sua senha do MySQL
-  database: 'usersdb'
+  database: 'userdb'
 });
 
 // Conectar ao banco de dados
@@ -51,8 +51,6 @@ app.get('/users/:id', (req, res) => {
     res.json(results);
   });
 });
-
-
 
 // Iniciar o servidor
 app.listen(port, () => {
