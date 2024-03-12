@@ -1,0 +1,38 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: SenhaTeste@123
+          MYSQL_DATABASE: userdb
+        ports:
+          - 3306:3306
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '18'
+    - name: Install dependencies
+      run: npm install
+    - name: Start MySQL
+      run: sudo /etc/init.d/mysql start
+    - name: Install client MySQL
+      run: apt install mysql-client
+    - name: Create tables
+      run: mysql -h localhost userdb -u root -p SenhaTeste@123 < estrutura.sql
+    - name: Run tests
+      run: npm test

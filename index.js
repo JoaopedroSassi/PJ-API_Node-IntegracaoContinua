@@ -5,36 +5,31 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-// Configuração do MySQL
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root', // Seu nome de usuário do MySQL
-  password: 'Sql@2000', // Sua senha do MySQL
-  database: 'userdb'
+  user: "root",
+  password: "Sql@2000",
+  database: "userdb"
 });
 
-// Conectar ao banco de dados
 connection.connect((err) => {
   if (err) throw err;
   console.log('Conectado ao banco de dados MySQL');
 });
 
-// Middleware para analisar corpos de solicitação
 app.use(bodyParser.json());
 
-// Rotas CRUD
 
-// Criar usuário
 app.post('/users', (req, res) => {
   const { name, email } = req.body;
   const INSERT_USER_QUERY = `INSERT INTO users (name, email) VALUES (?, ?)`;
   connection.query(INSERT_USER_QUERY, [name, email], (err, results) => {
     if (err) throw err;
+    res.statusCode = 201;
     res.send('Usuário criado com sucesso');
   });
 });
 
-// Obter todos os usuários
 app.get('/users', (req, res) => {
   connection.query('SELECT * FROM users', (err, results) => {
     if (err) throw err;
@@ -42,7 +37,6 @@ app.get('/users', (req, res) => {
   });
 });
 
-// Obter um usuário por ID
 app.get('/users/:id', (req, res) => {
   const userId = req.params.id;
   const SELECT_USER_QUERY = `SELECT * FROM users WHERE id = ?`;
@@ -52,7 +46,8 @@ app.get('/users/:id', (req, res) => {
   });
 });
 
-// Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
 });
+
+module.exports = app;
