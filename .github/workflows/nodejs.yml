@@ -31,7 +31,7 @@ jobs:
     - name: Start MySQL
       run: sudo /etc/init.d/mysql start
     - name: Install client MySQL
-      run: apt install mysql-client
+      run: sudo apt install mysql-client
     - name: Create tables
       run: mysql -h localhost userdb -u root -p SenhaTeste@123 < estrutura.sql
     - name: Run tests
