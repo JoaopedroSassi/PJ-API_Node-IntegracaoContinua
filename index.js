@@ -7,12 +7,13 @@ const port = 3000;
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE
+  user: process.env.MYSQL_USER || "root",
+  password: process.env.MYSQL_PASSWORD || "Sql@2000",
+  database: process.env.MYSQL_DATABASE || "userdb"
 });
 
 connection.connect((err) => {
+  
   if (err) throw err;
   console.log('Conectado ao banco de dados MySQL');
 });
