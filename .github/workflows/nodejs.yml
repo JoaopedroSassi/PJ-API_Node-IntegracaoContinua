@@ -37,4 +37,8 @@ jobs:
     - name: Create tables
       run: mysql -h 127.0.0.1 --port 3306 -u root -pSenhaTeste@123 userdb < estrutura.sql
     - name: Run tests
+      env:
+        MYSQL_USER: root
+        MYSQL_PASSWORD: SenhaTeste@123
+        MYSQL_DATABASE: userdb
       run: npm test
