@@ -12,15 +12,19 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: SenhaTeste@123
           MYSQL_DATABASE: userdb
         ports:
           - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+    - name: Configure MySQL permissions
+      run: mysql -h 127.0.0.1 --port 3306 -u root -pSenhaTeste@123 -e "ALTER USER 'root'@'%' IDENTIFIED BY 'SenhaTeste@123'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;"
+
     - uses: actions/checkout@v2
     - name: Use Node.js
       uses: actions/setup-node@v1
@@ -28,11 +32,10 @@ jobs:
         node-version: '18'
     - name: Install dependencies
       run: npm install
-    - name: Start MySQL
-      run: sudo /etc/init.d/mysql start
+
     - name: Install client MySQL
       run: sudo apt install mysql-client
     - name: Create tables
-      run: mysql -u root -p SenhaTeste@123 userdb < estrutura.sql
+      run: mysql -h 127.0.0.1 --port 3306 -u root -p SenhaTeste@123 userdb < estrutura.sql
     - name: Run tests
       run: npm test
