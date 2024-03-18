@@ -7,6 +7,14 @@ describe('Teste GET /users', () => {
     expect(response.statusCode).toBe(200);
   });
 });
+
+describe('Teste POST /users', () => {
+  it('deve responder com status 201', async () => {
+    const response = await supertest(app).post('/users').send({name:"Joazinho", email:"joazinho@goldcs.com"});
+    expect(response.statusCode).toBe(201);
+  });
+});
+
 afterAll(() => {
   server.close();
   connection.end();
